@@ -1,0 +1,829 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bhosale Agro Business | Organic Farm Produce</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Source+Sans+3:wght@300;400;600;700&family=Caveat:wght@400;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        /* Product Slider Styles */
+        .product-slider {
+            scroll-snap-type: x mandatory;
+            scrollbar-width: none;
+            /* Firefox */
+            -ms-overflow-style: none;
+            /* IE and Edge */
+        }
+
+        .product-slider::-webkit-scrollbar {
+            display: none;
+            /* Chrome, Safari, Opera */
+        }
+
+        .product-slide {
+            scroll-snap-align: start;
+        }
+
+        .slider-dots {
+            display: flex;
+            justify-content: center;
+            margin-top: 1rem;
+        }
+
+        .slider-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            margin: 0 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .slider-dot.active {
+            background-color: #166534;
+            transform: scale(1.2);
+        }
+
+        .slider-dot:not(.active) {
+            background-color: #d1d5db;
+        }
+
+        .product-card {
+            background-color: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05), 0 1px 3px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1), 0 4px 6px rgba(0, 0, 0, 0.05);
+        }
+
+        .product-image {
+            height: 300px;
+            object-fit: cover;
+        }
+
+        .product-info {
+            padding: 1.5rem;
+        }
+
+        .product-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #166534;
+            margin-bottom: 0.5rem;
+        }
+
+        .product-description {
+            color: #4b5563;
+            margin-bottom: 1rem;
+        }
+
+        .product-price {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #166534;
+            margin-bottom: 1rem;
+        }
+
+        .product-features {
+            margin-bottom: 1.5rem;
+        }
+
+        .product-feature {
+            display: flex;
+            align-items: center;
+            margin-bottom: 0.5rem;
+            color: #4b5563;
+        }
+
+        .product-feature i {
+            color: #166534;
+            margin-right: 0.5rem;
+        }
+
+        .product-controls {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .quantity-control {
+            display: flex;
+            align-items: center;
+            border: 1px solid #e5e7eb;
+            border-radius: 0.375rem;
+            overflow: hidden;
+        }
+
+        .quantity-btn {
+            background-color: #f3f4f6;
+            border: none;
+            padding: 0.5rem 0.75rem;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+        }
+
+        .quantity-btn:hover {
+            background-color: #e5e7eb;
+        }
+
+        .quantity-input {
+            width: 3rem;
+            text-align: center;
+            border: none;
+            padding: 0.5rem 0;
+        }
+
+        .order-btn {
+            background-color: #f59e0b;
+            color: white;
+            border: none;
+            border-radius: 0.375rem;
+            padding: 0.75rem 1.5rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .order-btn:hover {
+            background-color: #d97706;
+            transform: translateY(-2px);
+        }
+
+        .slider-nav {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 40px;
+            height: 40px;
+            background-color: rgba(255, 255, 255, 0.8);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 10;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .slider-nav:hover {
+            background-color: white;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+        }
+
+        .slider-nav.prev {
+            left: 10px;
+        }
+
+        .slider-nav.next {
+            right: 10px;
+        }
+    </style>
+</head>
+
+<body class="font-sans bg-gray-50">
+    <!-- WhatsApp Float Button -->
+    <div class="whatsapp-float">
+        <a href="https://wa.me/919004030525"
+            class="bg-green-500 hover:bg-green-600 text-white rounded-full p-4 shadow-lg transition duration-300 flex items-center justify-center"
+            aria-label="Contact us on WhatsApp">
+            <i class="fab fa-whatsapp text-2xl"></i>
+        </a>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="bg-white shadow-md sticky top-0 z-50">
+        <div class="container-natural mx-auto px-4 py-3 flex justify-between items-center">
+            <div class="flex items-center">
+                <img src="/images/logo.jpg"
+                    alt="Bhosale Agro Logo" class="h-12 mr-2">
+                <span class="text-xl font-bold text-green-800 brand-name">Bhosale Agro Business</span>
+            </div>
+            <div class="hidden md:flex space-x-8">
+                <a href="#home" class="nav-link active">Home</a>
+                <a href="#about" class="nav-link">About Us</a>
+                <a href="#produce" class="nav-link">Our Produce</a>
+                <a href="#order" class="nav-link">Order Online</a>
+                <a href="#contact" class="nav-link">Contact Us</a>
+            </div>
+            <button class="md:hidden text-gray-700" id="mobile-menu-button" aria-label="Toggle menu">
+                <i class="fas fa-bars text-2xl"></i>
+            </button>
+        </div>
+        <!-- Mobile Menu -->
+        <div class="md:hidden hidden bg-white w-full px-4 py-2" id="mobile-menu">
+            <a href="#home" class="block py-2 nav-link active">Home</a>
+            <a href="#about" class="block py-2 nav-link">About Us</a>
+            <a href="#produce" class="block py-2 nav-link">Our Produce</a>
+            <a href="#order" class="block py-2 nav-link">Order Online</a>
+            <a href="#contact" class="block py-2 nav-link">Contact Us</a>
+        </div>
+    </nav>
+
+    <!-- Homepage -->
+    <section id="home" class="hero-bg flex items-center justify-center text-white">
+        <div class="text-center px-4 animate-on-scroll">
+            <span class="handwritten text-yellow-400 mb-2 block">Welcome to our farm</span>
+            <h1 class="text-4xl md:text-6xl font-bold mb-4">Organic Farm Fresh Produce</h1>
+            <p class="text-xl md:text-2xl mb-8">Naturally grown with love and traditional methods</p>
+            <div class="flex flex-col md:flex-row justify-center gap-4">
+                <a href="#order" class="btn-natural">
+                    Order Now
+                </a>
+                <a href="#about" class="btn-natural btn-outline-natural">
+                    Explore Our Farm
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Quick Stats -->
+    <section class="bg-green-800 text-white py-8">
+        <div class="container-natural mx-auto px-4">
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
+                <div class="p-4 animate-on-scroll">
+                    <div class="text-3xl font-bold mb-2">25+</div>
+                    <div class="text-sm">Years of Organic Farming</div>
+                </div>
+                <div class="p-4 animate-on-scroll" style="animation-delay: 0.2s;">
+                    <div class="text-3xl font-bold mb-2">50+</div>
+                    <div class="text-sm">Acres of Farmland</div>
+                </div>
+                <div class="p-4 animate-on-scroll" style="animation-delay: 0.4s;">
+                    <div class="text-3xl font-bold mb-2">100+</div>
+                    <div class="text-sm">Khillari Cattle</div>
+                </div>
+                <div class="p-4 animate-on-scroll" style="animation-delay: 0.6s;">
+                    <div class="text-3xl font-bold mb-2">100%</div>
+                    <div class="text-sm">Organic Promise</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- USP Highlights -->
+    <section class="section-padding bg-texture">
+        <div class="container-natural mx-auto px-4">
+            <h2 class="text-3xl font-bold text-center section-title text-green-800">Why Choose Bhosale Agro?</h2>
+            <p class="text-center text-gray-600 max-w-2xl mx-auto mb-12">Our commitment to traditional farming methods
+                and sustainable practices ensures the highest quality produce for your family.</p>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="card-natural text-center p-6 animate-on-scroll">
+                    <div class="text-5xl text-green-600 mb-4">
+                        <i class="fas fa-leaf"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3">100% Organic</h3>
+                    <p class="text-gray-600">Our produce is grown without synthetic pesticides or fertilizers, using
+                        only natural methods passed down through generations.</p>
+                </div>
+                <div class="card-natural text-center p-6 animate-on-scroll" style="animation-delay: 0.2s;">
+                    <div class="text-5xl text-yellow-600 mb-4">
+                        <i class="fas fa-paw"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3">Khillari Cattle</h3>
+                    <p class="text-gray-600">We preserve the indigenous Khillari cattle breed, known for their hardiness
+                        and contribution to sustainable farming.</p>
+                </div>
+                <div class="card-natural text-center p-6 animate-on-scroll" style="animation-delay: 0.4s;">
+                    <div class="text-5xl text-green-800 mb-4">
+                        <i class="fas fa-home"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3">Family-Owned</h3>
+                    <p class="text-gray-600">A family passion since 1995, we take pride in personally overseeing every
+                        aspect of our farming operations.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="organic-divider"></div>
+
+    <!-- Our Promise -->
+    <section class="section-padding bg-white">
+        <div class="container-natural mx-auto px-4">
+            <div class="flex flex-col md:flex-row items-center">
+                <div class="md:w-1/2 mb-8 md:mb-0 md:pr-8 animate-on-scroll">
+                    <h2 class="text-3xl font-bold mb-6 section-title text-green-800">Our Promise to You</h2>
+                    <p class="text-gray-700 mb-4">At Bhosale Agro Business, we believe in the power of nature and
+                        traditional farming methods. Our commitment goes beyond just growing food - we're cultivating a
+                        healthier future.</p>
+                    <p class="text-gray-700 mb-4">Using Jivamrut (a natural fertilizer made from cow dung, urine,
+                        jaggery, and pulses) and other organic techniques, we ensure that every product from our farm is
+                        pure, nutritious, and full of natural flavor.</p>
+                    <p class="text-gray-700">We invite you to experience the difference that truly organic farming
+                        makes.</p>
+                </div>
+                <div class="md:w-1/2 animate-on-scroll" style="animation-delay: 0.3s;">
+                    <div class="image-frame">
+                        <img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/organic_farm-9jInxgMx7MCt8CrqAMnLkY7zMoPPZO.png"
+                            alt="Organic Farm" class="rounded-lg w-full">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Add this section after the "Our Promise" section and before the "Farm Video Showcase" section -->
+
+    <!-- Why Khillari & Jiv Amrut -->
+    <section class="section-padding bg-texture">
+        <div class="container-natural mx-auto px-4">
+            <h2 class="text-3xl font-bold text-center section-title text-green-800">Our Farming Philosophy</h2>
+            <div class="flex flex-col md:flex-row mb-12">
+                <div class="md:w-1/2 mb-8 md:mb-0 md:pr-8 animate-on-scroll">
+                    <h3 class="text-2xl font-bold mb-4 text-yellow-600">The Khillari Cattle Advantage</h3>
+                    <p class="text-gray-700 mb-4">Our herd of indigenous Khillari cattle are more than just livestock -
+                        they're an integral part of our organic ecosystem. Known for their hardiness and disease
+                        resistance, these native breeds:</p>
+                    <ul class="leaf-bullet text-gray-700 space-y-2">
+                        <li>Provide high-quality manure for our natural fertilizers</li>
+                        <li>Help maintain soil health through natural grazing patterns</li>
+                        <li>Require fewer resources than commercial breeds</li>
+                        <li>Preserve valuable genetic diversity</li>
+                    </ul>
+                </div>
+                <div class="md:w-1/2 animate-on-scroll" style="animation-delay: 0.3s;">
+                    <div class="image-frame">
+                        <img src="/images/cattle.jpg"
+                            alt="Khillari Cattle" class="rounded-lg w-full">
+                    </div>
+                </div>
+            </div>
+            <div class="flex flex-col md:flex-row-reverse">
+                <div class="md:w-1/2 mb-8 md:mb-0 md:pl-8 animate-on-scroll">
+                    <h3 class="text-2xl font-bold mb-4 text-green-600">Jivamrut: Nature's Fertilizer</h3>
+                    <p class="text-gray-700 mb-4">We prepare Jivamrut, a traditional bio-fertilizer, using ingredients
+                        from our farm:</p>
+                    <ul class="leaf-bullet text-gray-700 space-y-2">
+                        <li>Fresh cow dung and urine from our Khillari cattle</li>
+                        <li>Jaggery and pulses grown on our farm</li>
+                        <li>Hand-ground soil from our termite mounds</li>
+                        <li>Water from our natural wells</li>
+                    </ul>
+                    <p class="text-gray-700 mt-4">This potent mixture enhances soil fertility naturally, promoting
+                        healthy plant growth without chemical inputs.</p>
+                </div>
+                <div class="md:w-1/2 animate-on-scroll" style="animation-delay: 0.3s;">
+                    <div class="image-frame">
+                        <img src="/images/jeevamrut.jpeg"
+                            alt="Jivamrut Preparation" class="rounded-lg w-full">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Farm Video Showcase -->
+    <section class="section-padding bg-texture">
+        <div class="container-natural mx-auto px-4">
+            <h2 class="text-3xl font-bold text-center section-title text-green-800">Experience Our Farm</h2>
+            <p class="text-center text-gray-600 max-w-2xl mx-auto mb-8">Take a virtual tour of our organic mango
+                orchards and see our traditional farming practices in action.</p>
+
+            <div class="card-natural p-6 shadow-lg max-w-4xl mx-auto overflow-hidden animate-on-scroll">
+                <div class="relative pb-[56.25%] h-0 overflow-hidden rounded-lg shadow-inner mb-6">
+                    <a href="https://www.youtube.com/watch?v=477WSE5jvUM" target="_blank" rel="noopener">
+                        <img src="https://img.youtube.com/vi/477WSE5jvUM/maxresdefault.jpg" alt="Watch on YouTube"
+                            class="rounded-lg shadow-inner mb-6 w-full">
+                    </a>
+
+                </div>
+
+                <div class="flex flex-col md:flex-row items-center">
+                    <div class="md:w-1/4 mb-4 md:mb-0 flex justify-center">
+                        <div class="bg-green-100 rounded-full p-5 text-green-800">
+                            <i class="fas fa-tree text-4xl"></i>
+                        </div>
+                    </div>
+                    <div class="md:w-3/4 md:pl-6">
+                        <h3 class="text-xl font-bold mb-3 text-green-800">What Makes Our Farm Special</h3>
+                        <ul class="leaf-bullet text-gray-700 space-y-2">
+                            <li>Traditional farming methods passed down through generations</li>
+                            <li>Natural irrigation systems that preserve water resources</li>
+                            <li>Indigenous Khillari cattle providing natural fertilizer</li>
+                            <li>Sustainable practices that maintain soil health and biodiversity</li>
+                        </ul>
+                        <div class="mt-4 flex justify-end">
+                            <a href="https://youtu.be/477WSE5jvUM" target="_blank"
+                                class="btn-natural bg-green-800 hover:bg-green-900 text-white flex items-center">
+                                <i class="fab fa-youtube mr-2"></i> Watch on YouTube
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="organic-divider"></div>
+
+    <!-- Featured Products Slider -->
+    <section id="produce" class="section-padding bg-texture">
+        <div class="container-natural mx-auto px-4">
+            <h2 class="text-3xl font-bold text-center section-title text-green-800">Our Featured Produce</h2>
+            <p class="text-center text-gray-600 max-w-2xl mx-auto mb-8">Discover our premium organic products, grown
+                with care and harvested at peak freshness.</p>
+
+            <div class="relative max-w-5xl mx-auto">
+                <!-- Navigation Buttons -->
+                <div class="slider-nav prev" id="prev-product">
+                    <i class="fas fa-chevron-left"></i>
+                </div>
+                <div class="slider-nav next" id="next-product">
+                    <i class="fas fa-chevron-right"></i>
+                </div>
+
+                <!-- Product Slider -->
+                <div class="product-slider flex overflow-x-auto snap-x snap-mandatory scroll-smooth"
+                    id="product-slider">
+                    <!-- Alphonso Mangoes -->
+                    <div class="product-slide flex-shrink-0 w-full px-4">
+                        <div class="product-card flex flex-col md:flex-row">
+                            <div class="md:w-1/2">
+                                <img src="/images/product.png"
+                                    alt="Alphonso Mangoes" class="w-full h-full object-cover">
+                            </div>
+                            <div class="md:w-1/2 p-8">
+                                <span class="handwritten text-yellow-600 mb-1 block">Our signature product</span>
+                                <h3 class="product-title">Alphonso Mangoes</h3>
+                                <p class="product-description">Our signature Alphonso mangoes are grown with utmost
+                                    care, ripened naturally on the tree, and hand-picked at perfect maturity. Known as
+                                    the "King of Mangoes," our Alphonsos have a rich, creamy texture and exquisite
+                                    sweetness.</p>
+                                <div class="product-price">₹600 <span class="text-base font-normal text-gray-600">/
+                                        dozen</span></div>
+                                <div class="product-features">
+                                    <div class="product-feature">
+                                        <i class="fas fa-check-circle"></i>
+                                        <span>Naturally ripened on tree</span>
+                                    </div>
+                                    <div class="product-feature">
+                                        <i class="fas fa-check-circle"></i>
+                                        <span>No artificial ripening agents</span>
+                                    </div>
+                                    <div class="product-feature">
+                                        <i class="fas fa-check-circle"></i>
+                                        <span>Grown using organic Jivamrut fertilizer</span>
+                                    </div>
+                                    <div class="product-feature">
+                                        <i class="fas fa-check-circle"></i>
+                                        <span>Hand-picked and carefully packed</span>
+                                    </div>
+                                    <div class="product-feature">
+                                        <i class="fas fa-check-circle"></i>
+                                        <span>Seasonal availability (April-June)</span>
+                                    </div>
+                                </div>
+                                <div class="product-controls">
+                                    <div class="quantity-control mr-4">
+                                        <button class="quantity-btn" id="decrease-qty-display">-</button>
+                                        <span id="qty-display" class="quantity-input">1</span>
+                                        <button class="quantity-btn" id="increase-qty-display">+</button>
+                                    </div>
+                                    <span class="text-gray-700">dozen</span>
+                                </div>
+                                <a href="#order" class="order-btn block text-center">
+                                    Order Now
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Mango Pulp -->
+                    <div class="product-slide flex-shrink-0 w-full px-4">
+                        <div class="product-card flex flex-col md:flex-row">
+                            <div class="md:w-1/2">
+                                <img src="/images/Mnago_pulp.jpg"
+                                    alt="Mango Pulp" class="w-full h-full object-cover">
+                            </div>
+                            <div class="md:w-1/2 p-8">
+                                <span class="handwritten text-yellow-600 mb-1 block">Pure and natural</span>
+                                <h3 class="product-title">Alphonso Mango Pulp</h3>
+                                <p class="product-description">Our premium Alphonso mango pulp is made from the finest
+                                    handpicked mangoes. With no added preservatives or sugar, it captures the authentic
+                                    taste and aroma of fresh mangoes. Perfect for desserts, smoothies, and culinary
+                                    creations.</p>
+                                <div class="product-price">₹400 <span class="text-base font-normal text-gray-600">/
+                                        kg</span></div>
+                                <div class="product-features">
+                                    <div class="product-feature">
+                                        <i class="fas fa-check-circle"></i>
+                                        <span>100% pure Alphonso mango</span>
+                                    </div>
+                                    <div class="product-feature">
+                                        <i class="fas fa-check-circle"></i>
+                                        <span>No preservatives or additives</span>
+                                    </div>
+                                    <div class="product-feature">
+                                        <i class="fas fa-check-circle"></i>
+                                        <span>Vacuum sealed for freshness</span>
+                                    </div>
+                                    <div class="product-feature">
+                                        <i class="fas fa-check-circle"></i>
+                                        <span>Available in 1kg and 5kg packs</span>
+                                    </div>
+                                    <div class="product-feature">
+                                        <i class="fas fa-check-circle"></i>
+                                        <span>Perfect for desserts and beverages</span>
+                                    </div>
+                                </div>
+                                <div class="product-controls">
+                                    <div class="quantity-control mr-4">
+                                        <button class="quantity-btn" id="decrease-pulp-qty">-</button>
+                                        <span id="pulp-qty" class="quantity-input">1</span>
+                                        <button class="quantity-btn" id="increase-pulp-qty">+</button>
+                                    </div>
+                                    <span class="text-gray-700">kg</span>
+                                </div>
+                                <a href="#order" class="order-btn block text-center">
+                                    Order Now
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Slider Dots -->
+                <div class="slider-dots mt-6">
+                    <div class="slider-dot active" data-index="0"></div>
+                    <div class="slider-dot" data-index="1"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials 
+    <section class="section-padding bg-white">
+        <div class="container-natural mx-auto px-4">
+            <h2 class="text-3xl font-bold text-center section-title text-green-800">What Our Customers Say</h2>
+            <div class="relative animate-on-scroll">
+                <div class="testimonial-slider flex overflow-x-auto snap-x snap-mandatory scroll-smooth pb-8"
+                    id="testimonial-slider">
+                    <div class="testimonial-slide flex-shrink-0 w-full md:w-1/2 px-4">
+                        <div class="testimonial-card">
+                            <div class="flex items-center mb-4">
+                                <div class="text-yellow-500 mr-2">
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                </div>
+                            </div>
+                            <p class="text-gray-700 mb-6">"The Alphonso mangoes from Bhosale Agro are the best I've ever
+                                tasted! The natural sweetness and aroma are unmatched. Knowing they're grown organically
+                                makes me feel good about serving them to my family."</p>
+                            <div class="flex items-center">
+                                <img src="https://randomuser.me/api/portraits/women/65.jpg" alt="Customer"
+                                    class="w-12 h-12 rounded-full mr-4">
+                                <div>
+                                    <h4 class="font-bold">Priya Sharma</h4>
+                                    <p class="text-gray-600">Mumbai</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="testimonial-slide flex-shrink-0 w-full md:w-1/2 px-4">
+                        <div class="testimonial-card">
+                            <div class="flex items-center mb-4">
+                                <div class="text-yellow-500 mr-2">
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                </div>
+                            </div>
+                            <p class="text-gray-700 mb-6">"As a chef, I'm very particular about ingredients. Bhosale
+                                Agro's organic produce consistently delivers exceptional quality and flavor. Their
+                                commitment to sustainable farming is truly commendable."</p>
+                            <div class="flex items-center">
+                                <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Customer"
+                                    class="w-12 h-12 rounded-full mr-4">
+                                <div>
+                                    <h4 class="font-bold">Rajiv Malhotra</h4>
+                                    <p class="text-gray-600">Executive Chef, Pune</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="testimonial-slide flex-shrink-0 w-full md:w-1/2 px-4">
+                        <div class="testimonial-card">
+                            <div class="flex items-center mb-4">
+                                <div class="text-yellow-500 mr-2">
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star-half-alt"></i>
+                                </div>
+                            </div>
+                            <p class="text-gray-700 mb-6">"I've been buying from Bhosale Agro for 5 years now. Their
+                                produce is consistently fresh and flavorful. I especially appreciate their transparency
+                                about farming practices and the personal touch in every order."</p>
+                            <div class="flex items-center">
+                                <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="Customer"
+                                    class="w-12 h-12 rounded-full mr-4">
+                                <div>
+                                    <h4 class="font-bold">Ananya Patel</h4>
+                                    <p class="text-gray-600">Regular Customer</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="flex justify-center mt-4">
+                    <button class="testimonial-dot w-3 h-3 rounded-full bg-green-600 mx-1" data-index="0"
+                        aria-label="Testimonial 1"></button>
+                    <button class="testimonial-dot w-3 h-3 rounded-full bg-gray-400 mx-1" data-index="1"
+                        aria-label="Testimonial 2"></button>
+                    <button class="testimonial-dot w-3 h-3 rounded-full bg-gray-400 mx-1" data-index="2"
+                        aria-label="Testimonial 3"></button>
+                </div>
+            </div>
+        </div>
+    </section>
+-->
+    <!-- Contact Snippet -->
+    <section class="py-16 bg-green-800 text-white">
+        <div class="container-natural mx-auto px-4 text-center animate-on-scroll">
+            <h2 class="text-3xl font-bold mb-4">Have Questions About Our Products?</h2>
+            <p class="text-xl mb-8">Our team is happy to help you with any inquiries about our farming practices or
+                products.</p>
+            <a href="#contact" class="btn-natural bg-white hover:bg-gray-200 text-green-800">
+                Contact Us
+            </a>
+        </div>
+    </section>
+
+    <!-- Order Online Page -->
+    <section id="order" class="order-bg flex items-center justify-center text-white">
+        <div class="text-center px-4 animate-on-scroll">
+            <span class="handwritten text-yellow-400 mb-2 block">Fresh from our farm</span>
+            <h1 class="text-4xl md:text-6xl font-bold mb-4">Order Online</h1>
+            <p class="text-xl md:text-2xl">Farm fresh produce delivered to your doorstep</p>
+        </div>
+    </section>
+
+    <section class="section-padding bg-white">
+        <div class="container-natural mx-auto px-4">
+            <div class="flex flex-col md:flex-row">
+                <div class="md:w-1/2 mb-8 md:mb-0 md:pr-8 animate-on-scroll">
+                    <div class="image-frame mb-6">
+                        <img src="/images/buisness card.png"
+                            alt="Order Form" class="w-full rounded-lg">
+                    </div>
+                    <div>
+                        <h3 class="text-2xl font-bold mb-2 text-yellow-600">How to Order</h3>
+                        <p class="text-gray-700 mb-4">Ordering our farm-fresh products is simple. Just fill out the form
+                            with your details, select the products you want, and we'll deliver them right to your
+                            doorstep.</p>
+                        <div class="mb-6">
+                            <h4 class="font-bold mb-2 text-green-800">Available Products:</h4>
+                            <ul class="leaf-bullet text-gray-700 space-y-1">
+                                <li>Alphonso Mangoes - ₹600/dozen</li>
+                                <li>Alphonso Mango Pulp - ₹400/kg</li>
+                                <li>Bulk orders available on request</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="md:w-1/2 animate-on-scroll" style="animation-delay: 0.3s;">
+                    <div class="card-natural p-8">
+                        <h3 class="text-2xl font-bold mb-6 text-green-800">Place Your Order</h3>
+                        <form id="order-form" class="form-natural">
+                            <div class="mb-6">
+                                <label for="product-select" class="block text-gray-700 font-bold mb-2">Select
+                                    Product</label>
+                                <select id="product-select" name="product"
+                                    class="w-full border border-gray-300 rounded-md p-2">
+                                    <option value="mangoes">Alphonso Mangoes (₹600/dozen)</option>
+                                    <option value="pulp">Alphonso Mango Pulp (₹400/kg)</option>
+                                </select>
+                            </div>
+                            <div class="mb-6">
+                                <label for="quantity" class="block text-gray-700 font-bold mb-2">Quantity</label>
+                                <div class="quantity-control">
+                                    <button type="button" id="decrease-qty">-</button>
+                                    <input type="number" id="quantity" name="quantity" value="1" min="1"
+                                        class="text-center" readonly>
+                                    <button type="button" id="increase-qty">+</button>
+                                </div>
+                                <span id="unit-label" class="ml-2 text-gray-700">dozen</span>
+                            </div>
+                            <div class="mb-6">
+                                <label for="name" class="block text-gray-700 font-bold mb-2">Full Name</label>
+                                <input type="text" id="name" name="name" required class="w-full">
+                            </div>
+                            <div class="mb-6">
+                                <label for="phone" class="block text-gray-700 font-bold mb-2">Phone Number</label>
+                                <input type="tel" id="phone" name="phone" required class="w-full">
+                            </div>
+                            <div class="mb-6">
+                                <label for="email" class="block text-gray-700 font-bold mb-2">Email (Optional)</label>
+                                <input type="email" id="email" name="email" class="w-full">
+                            </div>
+                            <div class="mb-6">
+                                <label for="address" class="block text-gray-700 font-bold mb-2">Delivery Address</label>
+                                <textarea id="address" name="address" rows="4" required class="w-full"></textarea>
+                            </div>
+                            <div class="mb-6">
+                                <label for="notes" class="block text-gray-700 font-bold mb-2">Special
+                                    Instructions</label>
+                                <textarea id="notes" name="notes" rows="2" class="w-full"></textarea>
+                            </div>
+                            <div class="mb-6 bg-yellow-50 p-4 rounded-lg border-natural">
+                                <h4 class="font-bold mb-2 text-green-800">Order Summary</h4>
+                                <div class="flex justify-between mb-2">
+                                    <span id="summary-product">Alphonso Mangoes (1 dozen)</span>
+                                    <span id="summary-product-price">₹600</span>
+                                </div>
+                                <div class="flex justify-between mb-2">
+                                    <span>Delivery Charges</span>
+                                    <span id="delivery-charges">₹100</span>
+                                </div>
+                                <div class="border-t border-gray-400 my-2"></div>
+                                <div class="flex justify-between font-bold">
+                                    <span>Total</span>
+                                    <span id="summary-total">₹700</span>
+                                </div>
+                            </div>
+                            <button type="submit" class="btn-natural w-full">
+                                Place Order via WhatsApp
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-green-900 text-white py-12">
+        <div class="container-natural mx-auto px-4">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <div>
+                    <h3 class="text-xl font-bold mb-4">Bhosale Agro Business</h3>
+                    <p class="mb-4">Organic farming with traditional values and modern quality standards.</p>
+                    <div class="flex space-x-4">
+                        <a href="#" class="hover:text-yellow-400">
+                            <i class="fab fa-facebook-f"></i>
+                        </a>
+                        <a href="#" class="hover:text-yellow-400">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                        <a href="https://youtu.be/477WSE5jvUM" class="hover:text-yellow-400">
+                            <i class="fab fa-youtube"></i>
+                        </a>
+                    </div>
+                </div>
+                <div>
+                    <h3 class="text-xl font-bold mb-4">Quick Links</h3>
+                    <ul class="space-y-2">
+                        <li><a href="#home" class="hover:text-yellow-400">Home</a></li>
+                        <li><a href="#about" class="hover:text-yellow-400">About Us</a></li>
+                        <li><a href="#produce" class="hover:text-yellow-400">Our Produce</a></li>
+                        <li><a href="#order" class="hover:text-yellow-400">Order Online</a></li>
+                        <li><a href="#contact" class="hover:text-yellow-400">Contact Us</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-xl font-bold mb-4">Our Products</h3>
+                    <ul class="space-y-2">
+                        <li><a href="#order" class="hover:text-yellow-400">Alphonso Mangoes</a></li>
+                        <li><a href="#order" class="hover:text-yellow-400">Alphonso Mango Pulp</a></li>
+                        <li><a href="#" class="hover:text-yellow-400">Organic Vegetables</a></li>
+                        <li><a href="#" class="hover:text-yellow-400">Jivamrut Fertilizer</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-xl font-bold mb-4">Contact Info</h3>
+                    <address class="not-italic">
+                        <p class="mb-2"><i class="fas fa-map-marker-alt mr-2"></i> Bhosale Wadi, Mangaon</p>
+                        <p class="mb-2"><i class="fas fa-phone mr-2"></i> +91 90040 30525</p>
+                        <p class="mb-2"><i class="fas fa-envelope mr-2"></i> contact@bhosaleagro.com</p>
+                    </address>
+                </div>
+            </div>
+            <div class="border-t border-green-800 mt-8 pt-8 text-center">
+                <p>&copy; 2023 Bhosale Agro Business. All Rights Reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
