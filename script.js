@@ -240,7 +240,7 @@ document.addEventListener("DOMContentLoaded", () => {
       }
 
       if (summaryProduct) {
-        const productName = product === "mangoes" ? "Alphonso Mangoes" : "Alphonso Mango Pulp"
+        const productName = product === "mangoes" ? "Kesar Mangoes" : "Aplhonso Mango Pulp"
         summaryProduct.textContent = `${productName} (${qty} ${unit})`
       }
 
@@ -287,11 +287,13 @@ document.addEventListener("DOMContentLoaded", () => {
       e.preventDefault()
 
       const product = document.getElementById("product-select").value
-      const productName = product === "mangoes" ? "Alphonso Mangoes" : "Alphonso Mango Pulp"
+      const productName = product === "mangoes" ? "Kesar Mangoes" : "Kesar Mango Pulp"
       const unit = units[product]
       const name = document.getElementById("name").value
       const phone = document.getElementById("phone").value
-      const email = document.getElementById("email").value
+      const emailElement = document.getElementById("email")
+      const email = emailElement ? emailElement.value : ""
+
       const address = document.getElementById("address").value
       const notes = document.getElementById("notes").value
       const quantity = document.getElementById("quantity").value
